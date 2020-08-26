@@ -17,8 +17,25 @@ app.get("/repositories", (request, response) => {
    return response.json(repositories);
 });
 
+
 app.post("/repositories", (request, response) => {
-  // TODO
+  // get repository attributes from body
+  const {title, url, techs} = request.body;
+
+  // create repository object
+  const repository = {
+    id: uuid(),
+    title,
+    url,
+    techs,
+    likes: 0
+  };
+
+  // store repository into array
+  repositories.push(repository);
+
+  // return created repository
+  return response.json(repository);
 });
 
 app.put("/repositories/:id", (request, response) => {
