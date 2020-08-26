@@ -95,8 +95,25 @@ app.delete("/repositories/:id", (request, response) => {
   return response.status(204).send(undefined);
 });
 
+
 app.post("/repositories/:id/like", (request, response) => {
-  // TODO
+  // get repository id from params
+  const {id} = request.params;
+
+  // get index of repository
+  const repoIndex = repositories.findIndex(repository => repository.id === id);
+
+  // repository does not exist: return bad request
+  if (repoIndex < 0)
+  {
+    return response.status(400).send();
+  }
+
+  // increase the amount of repository likes
+  repositories[repoIndex].likes++;
+
+  // return repository with updated quantity of likes
+  return response.json(repositories[repoIndex]);
 });
 
 module.exports = app;
