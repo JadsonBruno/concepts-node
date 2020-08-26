@@ -74,8 +74,25 @@ app.put("/repositories/:id", (request, response) => {
   return response.json(repository);
 });
 
+
 app.delete("/repositories/:id", (request, response) => {
-  // TODO
+  // get repository id from params
+  const {id} = request.params;
+
+  // get index of repository
+  const repoIndex = repositories.findIndex(repository => repository.id === id);
+
+  // repository does not exist: return bad request
+  if (repoIndex < 0)
+  {
+    return response.status(400).send();
+  }
+
+  // remove repository from store
+  repositories.splice(repoIndex, 1);
+
+  // return no content
+  return response.status(204).send(undefined);
 });
 
 app.post("/repositories/:id/like", (request, response) => {
