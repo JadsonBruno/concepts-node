@@ -38,8 +38,40 @@ app.post("/repositories", (request, response) => {
   return response.json(repository);
 });
 
+
 app.put("/repositories/:id", (request, response) => {
-  // TODO
+  // get repository id from params
+  const {id} = request.params;
+
+  // get new repository attributes from body
+  const {title, url, techs} = request.body;
+
+  // get index of repository
+  const repoIndex = repositories.findIndex(repository => repository.id === id);
+
+  // repository does not exist: return bad request
+  if (repoIndex < 0)
+  {
+    return response.status(400).send();
+  }
+
+  // get likes amount of repository
+  const likes = repositories[repoIndex].likes;
+
+  // create new repository object
+  const repository = {
+    id,
+    title,
+    url,
+    techs,
+    likes
+  };
+
+  // store updated repository
+  repositories[repoIndex] = repository;
+
+  // return updated repository
+  return response.json(repository);
 });
 
 app.delete("/repositories/:id", (request, response) => {
